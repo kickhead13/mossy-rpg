@@ -26,8 +26,6 @@ fn main() {
         loop {
             if let Ok(input) = getter.getch() {
                 sender.send(input as u8);
-                //std::thread::sleep(sleep_duration);
-                //getter = Getch::new();
             }
         }
     });
