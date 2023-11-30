@@ -1,16 +1,12 @@
+mod structures;
+use structures::Position;
+mod character;
+
 use std::io::{Write, stdout};
 use crossterm::{QueueableCommand, cursor, terminal}; 
 use std::time::Duration;
 use getch::Getch;
 use std::sync::mpsc;
-
-pub struct Position(u16, u16);
-
-impl Position {
-    pub fn new(x: u16, y: u16) -> Self {
-        Position(x, y)
-    }
-}
 
 fn main() {
 
@@ -38,32 +34,23 @@ fn main() {
 
     loop {
         stdout.queue(terminal::Clear(terminal::ClearType::All)).unwrap();
+        for x in 1..((term_height-1) as usize) {
+            let mut row = String::new();
+            row = (0..(term_width-2)).map(|_|"A").collect::<String>();
+            stdout.queue(cursor::MoveTo(1, x as u16)).unwrap();
+            stdout.write(row.as_bytes()).unwrap();
+        } 
         fps_contor += 1;
         stdout.queue(cursor::MoveTo(2,0)).unwrap();
         stdout.write(format!("{}",fps_contor).as_bytes()).unwrap();
         if let Ok(input) = receiver.try_recv() {
             if is_next_frame {
-                match input {
-                    100 | 68 => char_pos.0 += 1, // D or d is pressed
-                    83 | 115 => char_pos.1 +=1, // S or s is pressed
-                    87 | 119 => {
-                        // W or w is pressed
-                        if char_pos.1 > 1 {
-                            char_pos.1 -= 1;
-                        }
-                    },
-                    97 | 65 => {
-                        // A or a is pressed
-                        if char_pos.0 > 0 {
-                            char_pos.0 -= 1;
-                        }
-                    },
-                    Error => ()
-                }
+                char_pos = character::handle_character_movement(char_pos, term_width, term_height, input);
                 is_next_frame = false;
             }
         }
         else {
+            char_pos = character::handle_char_pos(char_pos, term_width as usize, term_height as usize);
             stdout.queue(cursor::MoveTo(char_pos.0, char_pos.1)).unwrap();
             stdout.write(character_sprite.as_bytes()).unwrap();
             (term_width, term_height) = terminal::size().unwrap();
