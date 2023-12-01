@@ -8,6 +8,8 @@ use std::time::Duration;
 use getch::Getch;
 use std::sync::mpsc;
 
+#[allow(unused_must_use)]
+
 fn main() {
 
     let mut is_next_frame = true;
@@ -16,7 +18,7 @@ fn main() {
     let sleep_duration = Duration::from_millis(100);
 
     let (sender, receiver) = mpsc::channel::<u8>();
-    let mut getter = Getch::new();
+    let getter = Getch::new();
 
     let _input_thread = std::thread::spawn( move || {
         loop {
@@ -35,8 +37,7 @@ fn main() {
     loop {
         stdout.queue(terminal::Clear(terminal::ClearType::All)).unwrap();
         for x in 1..((term_height-1) as usize) {
-            let mut row = String::new();
-            row = (0..(term_width-2)).map(|_|"A").collect::<String>();
+            let row = (0..(term_width-2)).map(|_|"A").collect::<String>();
             stdout.queue(cursor::MoveTo(1, x as u16)).unwrap();
             stdout.write(row.as_bytes()).unwrap();
         } 
