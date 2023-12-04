@@ -10,7 +10,14 @@ pub fn handle_character_movement(
         term_height: u16,
         input: u8) -> 
 structures::Position 
-{
+{   
+    char_pos = match char_pos {
+        structures::Position(a,b) if (a>=1 && a<=term_width-3)
+            && ( b>=1 && b<=term_height-2) => structures::Position(a,b),
+        _ => {
+            char_pos.set(term_width, term_height)
+        }
+    };
     match input {
         100 | 68 => {
             // D or d is pressed

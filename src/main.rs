@@ -11,7 +11,6 @@ use std::sync::mpsc;
 #[allow(unused_must_use)]
 
 fn main() {
-
     let mut is_next_frame = true;
 
     let character_sprite: &str = ":3";
@@ -37,7 +36,7 @@ fn main() {
     loop {
         stdout.queue(terminal::Clear(terminal::ClearType::All)).unwrap();
         for x in 1..((term_height-1) as usize) {
-            let row = (0..(term_width-2)).map(|_|"A").collect::<String>();
+            let row = (0..(term_width-2)).map(|_|" ").collect::<String>();
             stdout.queue(cursor::MoveTo(1, x as u16)).unwrap();
             stdout.write(row.as_bytes()).unwrap();
         } 
@@ -46,12 +45,19 @@ fn main() {
         stdout.write(format!("{}",fps_contor).as_bytes()).unwrap();
         if let Ok(input) = receiver.try_recv() {
             if is_next_frame {
-                char_pos = character::handle_character_movement(char_pos, term_width, term_height, input);
+                char_pos = character::handle_character_movement(
+                    char_pos,
+                    term_width,
+                    term_height,
+                input);
                 is_next_frame = false;
             }
         }
         else {
-            char_pos = character::handle_char_pos(char_pos, term_width as usize, term_height as usize);
+            char_pos = character::handle_char_pos(
+                char_pos,
+                term_width as usize,
+            term_height as usize);
             stdout.queue(cursor::MoveTo(char_pos.0, char_pos.1)).unwrap();
             stdout.write(character_sprite.as_bytes()).unwrap();
             (term_width, term_height) = terminal::size().unwrap();
@@ -65,3 +71,5 @@ fn main() {
         }
     }
 }
+
+
