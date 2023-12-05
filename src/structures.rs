@@ -27,14 +27,22 @@ pub fn basic_attack(_direction: Direction) {
 #[allow(dead_code)]
 pub struct Attack {
     pub sprite: String,
-    pub attack: Box<dyn Fn(Direction) -> ()>
+    pub attack_pos: Position,
+    pub life_time: u32,
+    pub attack: Box<dyn Fn(&mut Attack, Direction) -> ()>
 }
 
 #[allow(dead_code)]
 impl Attack {
-    pub fn new( sprite: String, attack: Box<dyn Fn(Direction) -> ()> ) -> Self {
+    pub fn new( sprite: String,
+                attack_pos: Position,
+                life_time: u32,
+                attack: Box<dyn Fn(&mut Attack, Direction) -> ()>
+    ) -> Self {
         Self {
             sprite: sprite,
+            attack_pos: attack_pos,
+            life_time: life_time,
             attack: attack
         }
     }

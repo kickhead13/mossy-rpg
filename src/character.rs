@@ -1,9 +1,12 @@
 use crate::structures;
 
-#[allow(unused_variables)]
-pub fn handle_char_pos(char_pos: structures::Position, term_width: usize, term_height: usize) -> structures::Position {
-    char_pos
+#[allow(dead_code)]
+pub struct Character {
+    char_pos: structures::Position,
+    direction: structures::Direction,
+    attack: structures::Attack
 }
+
 pub fn handle_character_movement(
         mut char_pos: structures::Position,
         term_width: u16,

@@ -54,10 +54,11 @@ fn main() {
             }
         }
         else {
-            char_pos = character::handle_char_pos(
+            char_pos = character::handle_character_movement(
                 char_pos,
-                term_width as usize,
-            term_height as usize);
+                term_width,
+                term_height,
+            0);
             stdout.queue(cursor::MoveTo(char_pos.0, char_pos.1)).unwrap();
             stdout.write(character_sprite.as_bytes()).unwrap();
             (term_width, term_height) = terminal::size().unwrap();
