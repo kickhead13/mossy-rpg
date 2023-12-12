@@ -12,6 +12,11 @@ impl Position {
 }
 
 #[allow(dead_code)]
+pub struct Sprite {
+    pub sprite: String
+}
+
+#[allow(dead_code)]
 pub enum Direction {
     UP,
     LEFT,
@@ -26,7 +31,7 @@ pub fn basic_attack(_direction: Direction) {
 
 #[allow(dead_code)]
 pub struct Attack {
-    pub sprite: String,
+    pub sprite: Sprite,
     pub attack_pos: Position,
     pub life_time: u32,
     pub attack: Box<dyn Fn(&mut Attack, Direction) -> ()>
@@ -34,10 +39,11 @@ pub struct Attack {
 
 #[allow(dead_code)]
 impl Attack {
-    pub fn new( sprite: String,
-                attack_pos: Position,
-                life_time: u32,
-                attack: Box<dyn Fn(&mut Attack, Direction) -> ()>
+    pub fn new( 
+        sprite: Sprite,
+        attack_pos: Position,
+        life_time: u32,
+        attack: Box<dyn Fn(&mut Attack, Direction) -> ()>
     ) -> Self {
         Self {
             sprite: sprite,

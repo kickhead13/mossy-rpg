@@ -4,6 +4,7 @@ use crate::structures;
 pub struct Character {
     char_pos: structures::Position,
     direction: structures::Direction,
+    sprite: structures::Sprite,
     attack: structures::Attack
 }
 
@@ -11,9 +12,8 @@ pub fn handle_character_movement(
         mut char_pos: structures::Position,
         term_width: u16,
         term_height: u16,
-        input: u8) -> 
-structures::Position 
-{   
+        input: u8
+) -> structures::Position {   
     char_pos = match char_pos {
         structures::Position(a,b) if (a>=1 && a<=term_width-3)
             && ( b>=1 && b<=term_height-2) => structures::Position(a,b),

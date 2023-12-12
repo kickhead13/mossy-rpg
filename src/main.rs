@@ -12,10 +12,8 @@ use std::sync::mpsc;
 
 fn main() {
     let mut is_next_frame = true;
-
     let character_sprite: &str = ":3";
     let sleep_duration = Duration::from_millis(100);
-
     let (sender, receiver) = mpsc::channel::<u8>();
     let getter = Getch::new();
 
@@ -49,7 +47,8 @@ fn main() {
                     char_pos,
                     term_width,
                     term_height,
-                input);
+                    input
+                );
                 is_next_frame = false;
             }
         }
@@ -58,7 +57,8 @@ fn main() {
                 char_pos,
                 term_width,
                 term_height,
-            0);
+                0
+            );
             stdout.queue(cursor::MoveTo(char_pos.0, char_pos.1)).unwrap();
             stdout.write(character_sprite.as_bytes()).unwrap();
             (term_width, term_height) = terminal::size().unwrap();
